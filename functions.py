@@ -11,7 +11,7 @@ import sys
 import re
 import objects as obj
 
-
+#something something 
 #text output speed
 def say(text):
     for char in text:
@@ -145,67 +145,63 @@ def end():
 def store():
     say(f"You see a strange merchant waiting in the shadows with blue flames in his lamp.")
     say(f"\nYou approach him.\n")
-    say(f"\n'What are you buying stranger?'\n")
+    say(f"\n'What are you buying, stranger?'\n")
     say(f"You check your pockets and see you have {obj.Player.gold} coins left.")
-    print ("1. Flame Sword       [5 DMG]     --> 100 gold coins")
-    print ("2. Enchanted Dagger  [5 DMG]     --> 40 gold coins")
-    print ("3. Stealth Bow       [5 DMG]     --> 70 gold coins")
-    print ("4. Meds              [1 MED]     --> 20 gold coins")
-    print ("5. back")
-    print (" ")
-    
-    merch_number = re.compile(r'[1,2,3,4,5]+')                                            #characters allowed
-    store.choice = input()                                                                #while loop that executes till the entered character entered is valid
-    
-    
-    while not merch_number.match(store.choice):                                           #compares the character entered
-        print ("Please enter a valid response")
+    print("1. Flame Sword       [+5 DMG]     --> 100 gold coins")
+    print("2. Enchanted Dagger  [+5 DMG]     --> 40 gold coins")
+    print("3. Stealth Bow       [+5 DMG]     --> 70 gold coins")
+    print("4. Meds              [+1 MED]     --> 20 gold coins")
+    print("5. Back")
+    print(" ")
+
+    merch_number = re.compile(r'[1,2,3,4,5]+')  #allowed characters
+    store.choice = input()  #prompt for user's choice
+
+    while not merch_number.match(store.choice):  #validate input
+        print("Please enter a valid response")
         store.choice = input()
-    
-    if store.choice == '1':
-        if obj.Player.gold < 0:
-            say("Not enough gold")
-            instance()
+
+    if store.choice == '1':  #The Flame Sword
+        if obj.Player.gold >= 100:
+            obj.Player.attack += 5  #add weapon bonus
+            obj.Player.gold -= 100  #deduct cost
+            say("You purchased the Flame Sword. Your attack increases by 5!")
+            say(f"You now have {obj.Player.gold} coins left in your pockets.") #displays player gold after purchase
         else:
-            obj.Player.weapon_bonus = 6
-            obj.Player.gold = obj.Player.gold-100
-            say("Purchased successfully")
-            say("The merchant grins as you leave and go forward.")
-            instance()
-        
-    elif store.choice == '2':
-        if obj.Player.gold < 0:
-            say("Not enough gold")
-            instance()
+            say("You don't have enough gold for the Flame Sword.")
+        instance()
+
+    elif store.choice == '2':  #The Enchanted Dagger
+        if obj.Player.gold >= 40:
+            obj.Player.attack += 5  #add weapon bonus
+            obj.Player.gold -= 40  #deduct cost
+            say("You purchased the Enchanted Dagger. Your attack increases by 5!")
+            say(f"You now have {obj.Player.gold} coins left in your pockets.") #displays player gold after purchase
         else:
-            obj.Player.weapon_bonus = 4
-            obj.Player.gold = obj.Player.gold-40
-            say("Purchased successfully")
-            say("The merchant grins as you leave and go forward.")
-            instance()
-        
-    elif store.choice == '3':
-        if obj.Player.gold < 0:
-            say("Not enough gold")
-            instance()
+            say("You don't have enough gold for the Enchanted Dagger.")
+        instance()
+
+    elif store.choice == '3':  #The Stealth Bow
+        if obj.Player.gold >= 70:
+            obj.Player.attack += 5  #add weapon bonus
+            obj.Player.gold -= 70  #deduct cost
+            say("You purchased the Stealth Bow. Your attack increases by 5!")
+            say(f"You now have {obj.Player.gold} coins left in your pockets.") #displays player gold after purchase
         else:
-            obj.Player.weapon_bonus = 5
-            obj.Player.gold = obj.Player.gold-70
-            say("Purchased successfully")
-            say("The merchant grins as you leave and go forward.")
-            instance()
-        
-    elif store.choice == '4':
-        if obj.Player.gold < 0:
-            say("Not enough gold")
-            instance()
+            say("You don't have enough gold for the Stealth Bow.")
+        instance()
+
+    elif store.choice == '4':  #The Meds
+        if obj.Player.gold >= 20:
+            obj.Settings.PLAYER_HEAL += 1  #add one healing item
+            obj.Player.gold -= 20  #deduct cost
+            say("You purchased a med. Use it wisely!")
+            say(f"You now have {obj.Player.gold} coins left in your pockets.") #displays player gold after purchase
         else:
-            obj.Settings.PLAYER_HEAL = obj.Settings.PLAYER_HEAL + 1
-            obj.Player.gold = obj.Player.gold-20
-            say("Purchased successfully")
-            say("The merchant grins as you leave and go forward.")
-            instance()
-    elif store.choice == '5':
-        say("\"You will come again stranger\", he exclaims")
-        instance()     
-             
+            say("You don't have enough gold for meds.")
+        instance()
+
+    elif store.choice == '5':  #exit store
+        say("\"You will come again, stranger,\" he exclaims.")
+        instance()  
+            
